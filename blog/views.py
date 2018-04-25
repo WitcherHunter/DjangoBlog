@@ -1,5 +1,5 @@
 from django.shortcuts import render,get_object_or_404
-from .models import Post, Category
+from .models import Post, Category, Tag
 from django.http import HttpResponse
 import markdown
 from comments.forms import CommentForm
@@ -111,15 +111,6 @@ class PostDetailView(DetailView):
 		context.update({'form': form, 'comment_list': comment_list})
 		return context
 
-def detail(request, post_id):
-	post = get_object_or_404(Post, pk = post_id)
-	post.increase_views()
-	post.body = markdown.markdown(post.body, extensions = ['markdown.extensions.extra','markdown.extensions.codehilite', 'markdown.extensions.toc'])
-	form = CommentForm()
-	comment_list = post.comment_set.all()
-	context = {'post':post, 'comment_list': comment_list, 'form': form}
-	return render(request, 'blog/detail.html', context = context)
-
 class ArchiveView(ListView):
 	model = Post
 	template_name = 'blog/index.html'
@@ -138,3 +129,16 @@ class CategoryView(ListView):
 	def get_queryset(self):
 		cate = get_object_or_404(Category, pk = self.kwargs.get('category_id'))
 		return super(CategoryView, self).get_queryset().filter(category = cate)
+
+class TagView(ListView):
+	model = Post
+	template_name = 'blog/index.html'
+	context_object_name = 'post_list'
+	pk_url_kwarg = "tag_id"
+
+	def get_queryset(self):
+		tag = get_object_or_404(Tag, pk = self.kwargs.get('tag_id'))
+		return super(TagView, self).get_queryset().filter(tags = tag)
+
+
+

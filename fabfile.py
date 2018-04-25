@@ -18,7 +18,7 @@ def deploy():
 		cd {} &&
 		../Python3/bin/pip install -r requirements.txt &&
 		../Python3/bin/python3 manage.py collectstatic --noinput &&
-		../Python3/bin/python3 manage.py makemigrations &&
+		../Python3/bin/python3 manage.py makemigrations --merge &&
 		../Python3/bin/python3 manage.py migrate
 		""".format(source_folder))
 	sudo('restart www.yinzimiao.club')

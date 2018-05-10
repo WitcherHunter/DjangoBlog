@@ -44,7 +44,7 @@ class Post(models.Model):
 
     def __str__(self):
         return "title is %s, body is %s, category is %s, tags is %s, author is %s" % (
-        self.title, self.body, self.category, self.tags, self.author)
+            self.title, self.body, self.category, self.tags, self.author)
 
     def get_absolute_url(self):
         return reverse('blog:detail', kwargs={'post_id': self.pk})
